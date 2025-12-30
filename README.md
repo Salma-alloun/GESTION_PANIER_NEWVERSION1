@@ -10,6 +10,7 @@ Application web développée avec **ASP.NET Core Razor Pages** permettant la ges
 - 🔐 Authentification personnalisée par cookies
 - 👤 Gestion des rôles (Admin / User / Manager)
 - 🛍️ Gestion des produits (CRUD)
+- ⚡ Récupération optimisée des produits avec mise en cache
 - 📦 Gestion des catégories(CRUD)
 - 🛒 Panier utilisateur
 - 🔒 Accès sécurisé aux pages Admin
@@ -56,3 +57,5 @@ Par défaut, les nouveaux comptes sont attribués au rôle User.
 git clone https://github.com/Salma-alloun/GESTION_PANIER.git
 ### Auteur
 Salma Alloun
+Update README: ajout du cache pour la récupération des produits
+
