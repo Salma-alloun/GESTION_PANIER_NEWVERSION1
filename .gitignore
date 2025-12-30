@@ -1,0 +1,21 @@
+# App settings (secrets)
+appsettings.json
+# Dossiers de build
+bin/
+obj/
+
+# Fichiers spécifiques à Visual Studio
+.vs/
+*.user
+*.suo
+
+# Fichier de configuration de développement (sensibles)
+appsettings.Development.json
+
+# Logs
+*.log
+
+# Packages NuGet
+*.nupkg
+appsettings.json
+appsettings.json

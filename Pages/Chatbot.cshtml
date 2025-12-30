@@ -1,0 +1,19 @@
+﻿@page
+@model ChatbotModel
+
+<h2>Assistant intelligent 🧠</h2>
+
+<form method="post">
+    <input type="text" name="UserMessage"
+           placeholder="Pose ta question..."
+           style="width:300px" />
+
+    <button type="submit">Envoyer</button>
+</form>
+
+@if (Model.BotResponse != null)
+{
+    <hr />
+    <strong>Réponse du chatbot :</strong>
+    <p>@Model.BotResponse</p>
+}

@@ -1,0 +1,180 @@
+﻿@page
+@model GESTION_PANIER.Pages.Products.PublicIndexModel
+@using System.Globalization
+
+@{
+    ViewData["Title"] = "Nos Produits";
+}
+<!-- Formulaire style navbar -->
+<div class="custom-navbar d-flex align-items-center justify-content-between px-3 py-2">
+    <!-- Recherche -->
+    <form class="d-flex" method="get">
+        <input class="form-control me-2" type="search" placeholder="Rechercher un produit" name="search" aria-label="Search">
+        <button class="btn btn-warning text-dark" type="submit">Rechercher</button>
+    </form>
+
+    <!-- Panier -->
+    <a asp-page="/Carts/Index" class="position-relative text-warning fs-4">
+        🛒
+        @if (Model.CartCount > 0)
+        {
+            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                @Model.CartCount
+            </span>
+        }
+    </a>
+</div>
+
+
+<div class="container mt-4">
+    
+
+    @* Grouper les produits par catégorie *@
+    @foreach (var categoryGroup in Model.Product.GroupBy(p => p.Category?.Name ?? "Non définie"))
+    {
+        <h2 class="category-title">@categoryGroup.Key</h2>
+        <div class="product-grid">
+            @foreach (var item in categoryGroup)
+            {
+                <div class="product-card">
+                    <div class="product-image">
+                        <img src="@(item.ImagePath ?? "/images/products/default.jpeg")" alt="@item.Name" />
+                    </div>
+                    <div class="product-info">
+                        <h5 class="product-name">@item.Name</h5>
+                        <p class="product-price">@item.Price.ToString("C", new CultureInfo("fr-MA"))</p>
+                        <p class="product-date">Sortie: @item.ReleaseDate.ToShortDateString()</p>
+
+                        <!-- Ajouter au panier via session -->
+                        <form method="post" asp-page-handler="Add">
+                            <input type="hidden" name="productId" value="@item.Id" />
+                            <button type="submit" class="btn btn-add w-100">Ajouter au panier</button>
+                        </form>
+
+                    </div>
+                </div>
+            }
+        </div>
+    }
+</div>
+
+
+
+
+<style>
+    /* Couleur Amazon */
+    .bg-amazon {
+        background-color: #ffd814 !important;
+        
+    }
+
+    .custom-navbar {
+        background-color: #232f3e; /* amazon-dark-blue */
+        padding: 0.5rem 1rem;
+        border-bottom: 1px solid #ddd;
+        border-radius: 5px;
+    }
+
+        .custom-navbar .form-control {
+            width: 250px;
+        }
+
+        .custom-navbar .btn {
+            background-color: #ffd814; /* amazon-yellow */
+            color: #232f3e;
+            font-weight: bold;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+            .custom-navbar .btn:hover {
+                background-color: #ff9900; /* amazon-orange */
+                color: white;
+            }
+
+
+    /* Titre catégorie */
+    .category-title {
+        font-size: 1.4rem;
+        margin-top: 30px;
+        margin-bottom: 15px;
+        border-bottom: 2px solid #ccc;
+        padding-bottom: 5px;
+    }
+
+    /* Grille responsive */
+    .product-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 20px;
+    }
+
+    /* Carte produit */
+    .product-card {
+        border: 1px solid #eee;
+        border-radius: 8px;
+        padding: 10px;
+        background-color: #fff;
+        transition: all 0.3s ease;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+    }
+
+        .product-card:hover {
+            box-shadow: 0 6px 20px rgba(0,0,0,0.2);
+            transform: translateY(-3px);
+        }
+
+    /* Image */
+    .product-image {
+        text-align: center;
+        margin-bottom: 10px;
+        height: 180px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+        .product-image img {
+            max-height: 160px;
+            object-fit: contain;
+            max-width: 100%;
+        }
+
+    /* Infos produit */
+    .product-info {
+        text-align: center;
+    }
+
+    .product-name {
+        font-size: 1rem;
+        font-weight: 600;
+        margin-bottom: 5px;
+    }
+
+    .product-price {
+        color: #b12704;
+        font-size: 1.1rem;
+        font-weight: bold;
+        margin-bottom: 5px;
+    }
+
+    .product-date {
+        font-size: 0.85rem;
+        color: #555;
+    }
+
+    /* Bouton Ajouter au panier */
+    .btn-add {
+        background-color: #f0c14b;
+        border-color: #a88734 #9c7e31 #846a29;
+        color: #111;
+        width: 100%;
+    }
+
+        .btn-add:hover {
+            background-color: #e2b33c;
+        }
+
+    
+</style>

@@ -1,0 +1,752 @@
+﻿@page
+@model GESTION_PANIER.Pages.Carts.IndexModel
+@using System.Globalization
+
+<!-- Style Amazon-like -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.10.0/font/bootstrap-icons.min.css">
+<style>
+    /* Variables de couleurs Amazon */
+    :root {
+        --amazon-orange: #ff9900;
+        --amazon-yellow: #ffd814;
+        --amazon-blue: #007185;
+        --amazon-dark-blue: #232f3e;
+        --amazon-price-red: #b12704;
+        --amazon-green: #007600;
+        --amazon-light-gray: #f7f7f7;
+        --amazon-border: #ddd;
+    }
+
+    body {
+        background-color: #fff;
+        font-family: Arial, sans-serif;
+    }
+
+    /* Header du panier */
+    .cart-header {
+        background: linear-gradient(to bottom, #f8f9fa, #fff);
+        border-bottom: 1px solid var(--amazon-border);
+        padding: 15px 0;
+        margin-bottom: 20px;
+    }
+
+    .cart-title {
+        color: var(--amazon-dark-blue);
+        font-weight: 600;
+        font-size: 28px;
+    }
+
+    .item-count {
+        color: #565959;
+        font-size: 14px;
+        margin-top: 5px;
+    }
+
+    /* Cart items - Style Amazon */
+    .amazon-cart-item {
+        border: 1px solid var(--amazon-border);
+        border-radius: 4px;
+        padding: 16px;
+        margin-bottom: 16px;
+        background: #fff;
+        position: relative;
+    }
+
+        .amazon-cart-item:hover {
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+    .product-image-container {
+        width: 140px;
+        height: 140px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: #fff;
+        border: 1px solid #f0f0f0;
+        border-radius: 4px;
+        padding: 8px;
+    }
+
+    .product-image {
+        max-width: 100%;
+        max-height: 100%;
+        object-fit: contain;
+    }
+
+    .product-title {
+        color: var(--amazon-blue);
+        font-size: 16px;
+        font-weight: 600;
+        line-height: 1.4;
+        margin-bottom: 8px;
+        text-decoration: none;
+    }
+
+        .product-title:hover {
+            color: var(--amazon-orange);
+            text-decoration: underline;
+        }
+
+    .product-description {
+        color: #565959;
+        font-size: 12px;
+        line-height: 1.4;
+        margin-bottom: 8px;
+        max-height: 40px;
+        overflow: hidden;
+    }
+
+    /* Badges Amazon */
+    .badge-container {
+        margin-bottom: 8px;
+    }
+
+    .amazon-badge {
+        display: inline-block;
+        font-size: 11px;
+        font-weight: 600;
+        padding: 2px 6px;
+        border-radius: 3px;
+        margin-right: 8px;
+        margin-bottom: 4px;
+    }
+
+    .badge-best-seller {
+        background-color: var(--amazon-yellow);
+        color: #000;
+    }
+
+    .badge-prime {
+        background-color: var(--amazon-blue);
+        color: white;
+    }
+
+    .badge-in-stock {
+        background-color: var(--amazon-green);
+        color: white;
+    }
+
+    /* Prix */
+    .price-section {
+        margin-bottom: 16px;
+    }
+
+    .current-price {
+        color: var(--amazon-price-red);
+        font-size: 18px;
+        font-weight: 700;
+    }
+
+    .list-price {
+        color: #565959;
+        font-size: 12px;
+        text-decoration: line-through;
+        margin-left: 8px;
+    }
+
+    .saving {
+        color: var(--amazon-green);
+        font-size: 12px;
+        font-weight: 600;
+        margin-left: 8px;
+    }
+
+    /* Contrôles quantité Amazon */
+    .quantity-container {
+        margin-bottom: 16px;
+    }
+
+    .quantity-label {
+        font-size: 13px;
+        color: #565959;
+        margin-bottom: 4px;
+    }
+
+    .quantity-selector {
+        display: inline-flex;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        overflow: hidden;
+        background: #f0f2f2;
+    }
+
+    .quantity-btn {
+        width: 28px;
+        height: 28px;
+        background: #f0f2f2;
+        border: none;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        color: #0f1111;
+        font-size: 18px;
+        padding: 0;
+    }
+
+        .quantity-btn:hover {
+            background: #e3e6e6;
+        }
+
+    .quantity-display {
+        width: 40px;
+        height: 28px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: white;
+        border-left: 1px solid #ccc;
+        border-right: 1px solid #ccc;
+        font-size: 14px;
+        font-weight: 600;
+    }
+
+    /* Actions Amazon */
+    .action-buttons {
+        border-top: 1px solid #f0f0f0;
+        padding-top: 12px;
+        margin-top: 12px;
+    }
+
+    .action-btn {
+        background: none;
+        border: none;
+        color: var(--amazon-blue);
+        font-size: 12px;
+        padding: 4px 12px 4px 0;
+        cursor: pointer;
+        display: inline-flex;
+        align-items: center;
+        text-decoration: none;
+    }
+
+        .action-btn:hover {
+            color: var(--amazon-orange);
+            text-decoration: underline;
+        }
+
+    .action-divider {
+        color: #ddd;
+        font-size: 12px;
+    }
+
+    .action-btn i {
+        margin-right: 4px;
+        font-size: 14px;
+    }
+
+    /* Saved for later section */
+    .saved-section {
+        background-color: var(--amazon-light-gray);
+        border: 1px solid var(--amazon-border);
+        border-radius: 4px;
+        padding: 16px;
+        margin-top: 24px;
+    }
+
+    .saved-header {
+        color: var(--amazon-dark-blue);
+        font-size: 18px;
+        font-weight: 600;
+        margin-bottom: 16px;
+    }
+
+    .saved-item {
+        background: white;
+        border: 1px solid #eee;
+        border-radius: 4px;
+        padding: 12px;
+        margin-bottom: 12px;
+    }
+
+        .saved-item:hover {
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+
+    /* Order summary - Style Amazon */
+    .order-summary {
+        border: 1px solid var(--amazon-border);
+        border-radius: 8px;
+        padding: 20px;
+        background: white;
+    }
+
+    .summary-title {
+        font-size: 18px;
+        font-weight: 600;
+        color: var(--amazon-dark-blue);
+        margin-bottom: 16px;
+    }
+
+    .summary-row {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 8px;
+        font-size: 14px;
+    }
+
+    .summary-total {
+        border-top: 1px solid var(--amazon-border);
+        margin-top: 12px;
+        padding-top: 12px;
+        font-size: 18px;
+        font-weight: 700;
+        color: var(--amazon-dark-blue);
+    }
+
+    .checkout-btn {
+        background: var(--amazon-yellow);
+        border: 1px solid #fcd200;
+        border-radius: 8px;
+        color: #0f1111;
+        font-size: 13px;
+        font-weight: 600;
+        height: 30px;
+        width: 100%;
+        margin-top: 16px;
+        cursor: pointer;
+    }
+
+        .checkout-btn:hover {
+            background: #f7ca00;
+        }
+
+    /* Similar products */
+    .similar-products-section {
+        margin-top: 30px;
+    }
+
+    .similar-title {
+        color: var(--amazon-dark-blue);
+        font-size: 20px;
+        font-weight: 600;
+        margin-bottom: 16px;
+        padding-bottom: 8px;
+        border-bottom: 1px solid #eee;
+    }
+
+    .similar-product-card {
+        border: 1px solid var(--amazon-border);
+        border-radius: 4px;
+        overflow: hidden;
+        background: white;
+        transition: all 0.2s ease;
+    }
+
+        .similar-product-card:hover {
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            transform: translateY(-2px);
+        }
+
+    .similar-product-img {
+        height: 140px;
+        object-fit: contain;
+        padding: 10px;
+        background: white;
+    }
+
+    .similar-product-body {
+        padding: 12px;
+    }
+
+    .similar-product-title {
+        color: var(--amazon-blue);
+        font-size: 14px;
+        font-weight: 600;
+        line-height: 1.4;
+        height: 40px;
+        overflow: hidden;
+        margin-bottom: 8px;
+    }
+
+    .similar-product-price {
+        color: var(--amazon-price-red);
+        font-size: 16px;
+        font-weight: 700;
+        margin-bottom: 12px;
+    }
+
+    .add-to-cart-btn {
+        background: var(--amazon-yellow);
+        border: 1px solid #fcd200;
+        border-radius: 4px;
+        color: #0f1111;
+        font-size: 12px;
+        font-weight: 600;
+        width: 100%;
+        padding: 8px;
+        cursor: pointer;
+    }
+
+        .add-to-cart-btn:hover {
+            background: #f7ca00;
+        }
+
+    /* Empty cart */
+    .empty-cart {
+        text-align: center;
+        padding: 60px 20px;
+        background: white;
+        border: 1px solid var(--amazon-border);
+        border-radius: 8px;
+    }
+
+    .empty-cart-icon {
+        font-size: 60px;
+        color: #ddd;
+        margin-bottom: 20px;
+    }
+
+    .empty-cart-title {
+        color: var(--amazon-dark-blue);
+        font-size: 24px;
+        margin-bottom: 10px;
+    }
+
+    .empty-cart-text {
+        color: #565959;
+        margin-bottom: 30px;
+    }
+
+    
+
+        .similar-product-img {
+            height: 120px;
+        }
+
+        .action-buttons {
+            flex-wrap: wrap;
+        }
+
+        .action-btn {
+            padding-right: 8px;
+            margin-bottom: 4px;
+        }
+    
+    
+</style>
+
+<div class="container-fluid px-3 px-md-5">
+    <!-- Header -->
+    <div class="cart-header">
+        <div class="d-flex align-items-center justify-content-between">
+            <div>
+                <h1 class="cart-title mb-0">Votre panier</h1>
+                @if (Model.Cart != null && Model.Cart.Items.Any(i => !i.SavedForLater))
+                {
+                    <div class="item-count">@Model.Cart.Items.Count(i => !i.SavedForLater) article(s)</div>
+                }
+            </div>
+            <a asp-page="/Products/PublicIndex" class="btn btn-light border" style="font-size: 14px; padding: 6px 12px;">
+                <i class="bi bi-arrow-left me-1"></i>Continuer vos achats
+            </a>
+        </div>
+    </div>
+
+    <div class="row">
+        <!-- Colonne principale -->
+        <div class="col-lg-8">
+            @if (Model.Cart == null || !Model.Cart.Items.Any(i => !i.SavedForLater))
+            {
+                <div class="empty-cart">
+                    <div class="empty-cart-icon">
+                        <i class="bi bi-cart-x"></i>
+                    </div>
+                    <h2 class="empty-cart-title">Votre panier Amazon est vide</h2>
+                    <p class="empty-cart-text">Vos articles sauvegardés apparaîtront ici.</p>
+                    <a asp-page="/Products/PublicIndex" class="btn btn-warning" style="background-color: var(--amazon-yellow); border-color: #fcd200; color: #0f1111; padding: 10px 30px;">
+                        Découvrir les produits
+                    </a>
+                </div>
+            }
+            else
+            {
+                @foreach (var item in Model.Cart.Items.Where(i => !i.SavedForLater))
+                {
+                    <div class="amazon-cart-item">
+                        <div class="row">
+                            <!-- Image du produit -->
+                            <div class="col-md-3 col-4">
+                                <div class="product-image-container">
+                                    <img src="@(item.Product?.ImagePath ?? "/images/products/default.jpeg")"
+                                         alt="@item.Product?.Name"
+                                         class="product-image" />
+                                </div>
+                            </div>
+
+                            <!-- Info produit -->
+                            <div class="col-md-9 col-8">
+                                <!-- Titre et description -->
+                                <a href="#" class="product-title d-block mb-2">
+                                    @item.Product?.Name
+                                </a>
+
+                                @if (!string.IsNullOrWhiteSpace(item.Product?.Description))
+                                {
+                                    <div class="product-description">
+                                        @item.Product.Description
+                                    </div>
+                                }
+
+                                <!-- Badges -->
+                                <div class="badge-container">
+                                    <span class="amazon-badge badge-best-seller">
+                                        <i class="bi bi-award me-1"></i>Best Seller
+                                    </span>
+                                    <span class="amazon-badge badge-in-stock">
+                                        <i class="bi bi-check-circle me-1"></i>En stock
+                                    </span>
+                                    <span class="amazon-badge" style="background: #ff6f61; color: white;">
+                                        <i class="bi bi-gift me-1"></i>Cadeau
+                                    </span>
+                                </div>
+
+                                <!-- Prix -->
+                                <div class="price-section">
+                                    <span class="current-price">
+                                        @item.Product?.Price.ToString("C", new CultureInfo("fr-MA"))
+                                    </span>
+                                    @if (item.Product?.Price < 300)
+                                    {
+                                        <span class="list-price">MAD 264.81</span>
+                                        <span class="saving">Économisez MAD 10.00</span>
+                                    }
+                                </div>
+
+                                <!-- Quantité -->
+                                <div class="quantity-container">
+                                    <div class="quantity-label">Quantité:</div>
+                                    <div class="quantity-selector">
+                                        <form method="post" asp-page-handler="Decrease" class="m-0">
+                                            <input type="hidden" name="productId" value="@item.ProductId" />
+                                            <button type="submit" class="quantity-btn">−</button>
+                                        </form>
+                                        <div class="quantity-display">@item.Quantity</div>
+                                        <form method="post" asp-page-handler="Increase" class="m-0">
+                                            <input type="hidden" name="productId" value="@item.ProductId" />
+                                            <button type="submit" class="quantity-btn">+</button>
+                                        </form>
+                                    </div>
+                                </div>
+
+                                <!-- Actions -->
+                                <div class="action-buttons d-flex flex-wrap">
+                                    <form method="post" asp-page-handler="Delete" class="m-0">
+                                        <input type="hidden" name="productId" value="@item.ProductId" />
+                                        <button type="submit" class="action-btn">
+                                            <i class="bi bi-trash"></i>Supprimer
+                                        </button>
+                                    </form>
+                                    <span class="action-divider">|</span>
+                                    <form method="post" asp-page-handler="SaveForLater" class="m-0">
+                                        <input type="hidden" name="productId" value="@item.ProductId" />
+                                        <button type="submit" class="action-btn">
+                                            <i class="bi bi-bookmark"></i>Enregistrer pour plus tard
+                                        </button>
+                                    </form>
+                                    <span class="action-divider">|</span>
+                                    <form method="post" asp-page-handler="Compare" class="m-0">
+                                        <input type="hidden" name="productId" value="@item.ProductId" />
+                                        <button type="submit" class="action-btn">
+                                            <i class="bi bi-shuffle"></i>Comparer avec des articles similaires
+                                        </button>
+                                    </form>
+                                    <span class="action-divider">|</span>
+                                    <a href="javascript:void(0);" class="action-btn" onclick="shareProduct('@item.Product?.Name', '@item.Product?.ImagePath')">
+                                        <i class="bi bi-share"></i>Partager
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+
+                <!-- Résumé de la commande (mobile seulement) -->
+                <div class="d-lg-none mb-4">
+                    <div class="order-summary">
+                        <div class="summary-title">Résumé</div>
+                        <div class="summary-row">
+                            <span>Sous-total (@Model.Cart.Items.Count(i => !i.SavedForLater) article(s)):</span>
+                            <span>@Model.Cart.Items.Where(i => !i.SavedForLater).Sum(i => (i.Product?.Price ?? 0) * i.Quantity).ToString("C", new CultureInfo("fr-MA"))</span>
+                        </div>
+                        <div class="summary-row">
+                            <span>Livraison:</span>
+                            <span class="text-success">Gratuite</span>
+                        </div>
+                        <div class="summary-total d-flex justify-content-between">
+                            <span>Total:</span>
+                            <span class="text-danger fw-bold">
+                                @Model.Cart.Items.Where(i => !i.SavedForLater).Sum(i => (i.Product?.Price ?? 0) * i.Quantity).ToString("C", new CultureInfo("fr-MA"))
+                            </span>
+                        </div>
+                        <button class="checkout-btn">
+                            Passer la commande (@Model.Cart.Items.Count(i => !i.SavedForLater) article)
+                        </button>
+                    </div>
+                </div>
+            }
+
+            <!-- Section "Saved for later" -->
+            @if (Model.Cart?.Items?.Any(i => i.SavedForLater) == true)
+            {
+                <div class="saved-section">
+                    <h3 class="saved-header">
+                        Enregistrés pour plus tard (@Model.Cart.Items.Count(i => i.SavedForLater))
+                    </h3>
+
+                    @foreach (var item in Model.Cart.Items.Where(i => i.SavedForLater))
+                    {
+                        <div class="saved-item">
+                            <div class="row align-items-center">
+                                <div class="col-3 col-md-2">
+                                    <img src="@(item.Product?.ImagePath ?? "/images/products/default.jpeg")"
+                                         alt="@item.Product?.Name"
+                                         style="width: 60px; height: 60px; object-fit: contain;" />
+                                </div>
+                                <div class="col-9 col-md-10">
+                                    <div class="d-md-flex justify-content-between align-items-center">
+                                        <div class="mb-2 mb-md-0">
+                                            <div style="color: var(--amazon-blue); font-size: 14px; font-weight: 600;">@item.Product?.Name</div>
+                                            <div style="color: var(--amazon-price-red); font-weight: 700; font-size: 16px;">
+                                                @item.Product?.Price.ToString("C", new CultureInfo("fr-MA"))
+                                            </div>
+                                        </div>
+                                        <div class="d-flex gap-2">
+                                            <form method="post" asp-page-handler="AddBackToCart" class="m-0">
+                                                <input type="hidden" name="productId" value="@item.ProductId" />
+                                                <button type="submit" class="btn btn-sm btn-outline-primary" style="font-size: 12px; padding: 4px 8px;">
+                                                    <i class="bi bi-cart-plus me-1"></i>Ajouter au panier
+                                                </button>
+                                            </form>
+                                            <form method="post" asp-page-handler="Delete" class="m-0">
+                                                <input type="hidden" name="productId" value="@item.ProductId" />
+                                                <button type="submit" class="btn btn-sm btn-outline-danger" style="font-size: 12px; padding: 4px 8px;">
+                                                    <i class="bi bi-trash me-1"></i>Supprimer
+                                                </button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            }
+        </div>
+
+        <!-- Colonne latérale - Récapitulatif de commande -->
+        <div class="col-lg-4 d-none d-lg-block">
+            <div class="order-summary sticky-top" style="top: 20px;">
+                <div class="summary-title">Récapitulatif de la commande</div>
+
+                <div class="summary-row">
+                    <span>Sous-total (@Model.Cart?.Items?.Count(i => !i.SavedForLater) article(s)):</span>
+                    <span>@Model.Cart.Items.Where(i => !i.SavedForLater).Sum(i => (i.Product?.Price ?? 0) * i.Quantity).ToString("C", new CultureInfo("fr-MA"))</span>
+                </div>
+                <div class="summary-row">
+                    <span>Livraison:</span>
+                    <span class="text-success">Gratuite</span>
+                </div>
+
+                @if (Model.Cart?.Items?.Any(i => !i.SavedForLater) == true)
+                {
+                    <div class="summary-total d-flex justify-content-between">
+                        <span>Total:</span>
+                        <span class="text-danger fw-bold">
+                            @Model.Cart.Items.Where(i => !i.SavedForLater).Sum(i => (i.Product?.Price ?? 0) * i.Quantity).ToString("C", new CultureInfo("fr-MA"))
+                        </span>
+                    </div>
+
+                    <div class="mt-3" style="font-size: 12px; color: #565959;">
+                        <i class="bi bi-gift me-1"></i>Cette commande contient un cadeau
+                    </div>
+
+                    <button class="checkout-btn mt-3">
+                        Passer la commande (@Model.Cart.Items.Count(i => !i.SavedForLater) article)
+                    </button>
+
+                    <div class="text-center mt-3" style="font-size: 12px; color: #565959;">
+                        <div class="mb-2">Moyens de paiement acceptés:</div>
+                        <div>
+                            <i class="bi bi-credit-card me-2"></i>
+                            <i class="bi bi-paypal me-2"></i>
+                            <i class="bi bi-bank me-2"></i>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+
+    <!-- Produits similaires -->
+    @if (Model.SimilarProducts != null && Model.SimilarProducts.Any())
+    {
+        <div class="similar-products-section">
+            <h3 class="similar-title">Produits similaires</h3>
+            <div class="row g-3">
+                @foreach (var sp in Model.SimilarProducts)
+                {
+                    <div class="col-6 col-md-4 col-lg-3">
+                        <div class="similar-product-card h-100">
+                            <div class="text-center p-3">
+                                <img src="@(sp.ImagePath ?? "/images/products/default.jpeg")"
+                                     class="similar-product-img"
+                                     alt="@sp.Name" />
+                            </div>
+                            <div class="similar-product-body">
+                                <div class="similar-product-title">@sp.Name</div>
+                                <div class="similar-product-price">@sp.Price.ToString("C", new CultureInfo("fr-MA"))</div>
+                                <form method="post" asp-page-handler="Add">
+                                    <input type="hidden" name="productId" value="@sp.Id" />
+                                    <button type="submit" class="add-to-cart-btn">
+                                        <i class="bi bi-cart-plus me-1"></i>Ajouter au panier
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    }
+</div>
+
+<script>
+    function shareProduct(name, imagePath) {
+        if (navigator.share) {
+            navigator.share({
+                title: 'Découvrez ce produit sur Amazon!',
+                text: `Regardez ce produit: ${name}`,
+                url: window.location.href,
+            }).then(() => {
+                console.log('Produit partagé avec succès');
+            }).catch((error) => {
+                console.error('Erreur lors du partage', error);
+            });
+        } else {
+            // Fallback pour les navigateurs sans support Web Share API
+            const shareUrl = window.location.href;
+            navigator.clipboard.writeText(shareUrl).then(() => {
+                alert('Lien du produit copié dans le presse-papier!');
+            });
+        }
+    }
+
+    // Animation pour les boutons quantité
+    document.querySelectorAll('.quantity-btn').forEach(button => {
+        button.addEventListener('click', function() {
+            this.style.transform = 'scale(0.95)';
+            setTimeout(() => {
+                this.style.transform = 'scale(1)';
+            }, 150);
+        });
+    });
+
+    // Animation pour les cartes de produits
+    document.querySelectorAll('.amazon-cart-item, .similar-product-card').forEach(card => {
+        card.addEventListener('mouseenter', function() {
+            this.style.transition = 'all 0.2s ease';
+        });
+    });
+</script>
