@@ -1,0 +1,9 @@
+# Visual Studio
+.vs/
+bin/
+obj/
+*.user
+
+# Config locale
+appsettings.Development.json
+*.local.json

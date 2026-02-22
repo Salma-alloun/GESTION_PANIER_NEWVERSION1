@@ -1,0 +1,90 @@
+﻿@page
+@model GESTION_PANIER.Pages.Products.EditModel
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1>Edit</h1>
+
+<h4>Product</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form method="post" enctype="multipart/form-data">
+            <!-- important pour upload -->
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Product.Id" />
+
+            <!-- Nom -->
+            <div class="form-group mb-3">
+                <span class="text-danger">*</span>
+                <label asp-for="Product.Name" class="control-label"></label>
+                <input asp-for="Product.Name" class="form-control" />
+                <span asp-validation-for="Product.Name" class="text-danger"></span>
+            </div>
+            <!-- description-->
+            <div class="form-group">
+                <label asp-for="Product.Description" class="control-label"></label>
+                <textarea asp-for="Product.Description" class="form-control"></textarea>
+                <span asp-validation-for="Product.Description" class="text-danger"></span>
+            </div>
+
+            <!-- Prix -->
+            <div class="form-group mb-3">
+                <label asp-for="Product.Price" class="control-label"></label>
+                <input asp-for="Product.Price" class="form-control" />
+                <span asp-validation-for="Product.Price" class="text-danger"></span>
+            </div>
+
+            <!-- Quantité -->
+            <div class="form-group mb-3">
+                <label asp-for="Product.Quantity" class="control-label"></label>
+                <input asp-for="Product.Quantity" class="form-control" />
+                <span asp-validation-for="Product.Quantity" class="text-danger"></span>
+            </div>
+
+            <!-- Catégorie -->
+            <div class="form-group mb-3">
+                <label asp-for="Product.CategoryId" class="control-label"></label>
+                <select asp-for="Product.CategoryId" class="form-control" asp-items="ViewBag.CategoryId"></select>
+                <span asp-validation-for="Product.CategoryId" class="text-danger"></span>
+            </div>
+
+            <!-- Image actuelle -->
+            <div class="form-group mb-3">
+                <label>Image actuelle :</label><br />
+                <img src="@(Model.Product.ImagePath ?? "/images/products/default.jpeg")"
+                     alt="Image du produit"
+                     style="max-height:150px; object-fit:cover;" />
+            </div>
+
+            <!-- Modifier l'image -->
+            <div class="form-group mb-3">
+                <label>Modifier l'image :</label>
+                <input type="file" asp-for="ImageFile" class="form-control" />
+            </div>
+
+            <!-- Date de sortie -->
+            <div class="form-group mb-3">
+                <label asp-for="Product.ReleaseDate" class="control-label"></label>
+                <input asp-for="Product.ReleaseDate" type="date" class="form-control" />
+                <span asp-validation-for="Product.ReleaseDate" class="text-danger"></span>
+            </div>
+
+            <div class="form-group mb-3">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-page="./Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

@@ -1,0 +1,105 @@
+html {
+  font-size: 14px;
+}
+
+@media (min-width: 768px) {
+  html {
+    font-size: 16px;
+  }
+}
+
+.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
+  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+}
+
+html {
+  position: relative;
+  min-height: 100%;
+}
+
+body {
+  margin-bottom: 60px;
+}
+
+/* ==========================
+   Navbar et Footer Couleurs
+========================== */
+:root {
+    --amazon-orange: #ff9900;
+    --amazon-yellow: #ffd814;
+    --amazon-blue: #007185;
+    --amazon-dark-blue: #232f3e;
+    --amazon-price-red: #b12704;
+    --amazon-green: #007600;
+    --amazon-light-gray: #f7f7f7;
+    --amazon-border: #ddd;
+}
+
+/* ==========================
+   Corps de la page
+========================== */
+body {
+    background-color: var(--amazon-light-gray);
+    font-family: Arial, sans-serif;
+}
+
+/* Navbar background */
+.navbar {
+    background-color: var(--amazon-dark-blue) !important;
+}
+
+    /* Tous les liens en amazon-yellow */
+    .navbar .navbar-brand,
+    .navbar .nav-link {
+        color: var(--amazon-yellow) !important;
+        font-weight: bold;
+        transition: color 0.3s;
+    }
+
+        /* Hover pour tous les liens */
+        .navbar .navbar-brand:hover,
+        .navbar .nav-link:hover {
+            color: var(--amazon-orange) !important;
+        }
+
+/* ==========================
+   Footer compact avec mêmes couleurs que navbar
+========================== */
+footer.footer {
+    background-color: var(--amazon-dark-blue);
+    color: white;
+    padding: 0.5rem 0; /* hauteur réduite */
+    font-size: 0.85rem;
+    border-top: 1px solid var(--amazon-border);
+    text-align: center;
+}
+
+    footer.footer a {
+        color: var(--amazon-yellow);
+        text-decoration: none;
+        transition: color 0.3s;
+    }
+
+        footer.footer a:hover {
+            color: var(--amazon-orange);
+            text-decoration: underline;
+        }
+
+/* Login / Register bouton */
+#_LoginPartial a.btn {
+    background-color: var(--amazon-yellow);
+    color: var(--amazon-dark-blue);
+    font-weight: bold;
+    border-radius: 3px;
+    padding: 0.4rem 1rem;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+    #_LoginPartial a.btn:hover {
+        background-color: var(--amazon-orange);
+        color: white;
+    }
+#logoutForm .btn-link:hover {
+    color: #ff9900 !important; /* amazon-orange */
+    text-decoration: underline;
+}

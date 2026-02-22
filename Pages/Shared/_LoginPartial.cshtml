@@ -1,0 +1,27 @@
+﻿@using Microsoft.AspNetCore.Authentication
+@using Microsoft.AspNetCore.Authentication.Cookies
+@using System.Security.Claims
+
+<ul class="navbar-nav ms-auto">
+    @if (User.Identity.IsAuthenticated)
+    {
+        <li class="nav-item">
+            <span class="nav-link">Hello, @User.Identity.Name!</span>
+        </li>
+        <li class="nav-item">
+            <form method="post" asp-page="/Logout" id="logoutForm" class="d-inline">
+                <button type="submit" class="btn btn-link nav-link">Logout</button>
+            </form>
+        </li>
+    }
+    else
+    {
+        <li class="nav-item">
+            <a class="btn nav-link" asp-page="/Login">Login</a>
+        </li>
+        <li class="nav-item">
+            <a class="btn nav-link" asp-page="/Register">Register</a>
+        </li>
+    }
+</ul>
+
